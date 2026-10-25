@@ -1,10 +1,8 @@
-# Visual Studio / VS Code
 .vs/
 .vscode/
 *.user
 *.suo
 
-# Build directories and compiler output
 build/
 Debug/
 Release/

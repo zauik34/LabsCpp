@@ -1,5 +1,5 @@
 #ifdef _MSC_VER
-#define _CRT_SECURE_NO_WARNINGS // В задании требуются стандартные функции fopen/fgets/fputs.
+#define _CRT_SECURE_NO_WARNINGS
 #endif
 
 #include <cstdio>
@@ -11,7 +11,6 @@
 
 constexpr int MAX_LENGTH = 4096;
 
-// Вариант 1: массив символов. Конец строки задаётся длиной, а не '\0'.
 bool processArray() {
     char text[MAX_LENGTH];
     int length = 0;
@@ -63,9 +62,7 @@ bool processArray() {
     return true;
 }
 
-// Вариант 2: Cи-строка. Обход продолжается до нулевого символа.
 bool processCString() {
-    // Два места сверх лимита нужны для '\n' и '\0' при чтении fgets().
     char text[MAX_LENGTH + 2];
     std::printf("Введите строку (не более %d байт):\n", MAX_LENGTH);
 
@@ -110,7 +107,6 @@ bool processCString() {
     return true;
 }
 
-// Вариант 3: чтение одной строки из input.txt и запись в output.txt.
 bool processFile() {
     char text[MAX_LENGTH + 2];
     std::FILE* input = std::fopen("input.txt", "r");
@@ -125,7 +121,7 @@ bool processFile() {
             std::fclose(input);
             return false;
         }
-        text[0] = '\0'; // Пустой файл считаем пустой строкой.
+        text[0] = '\0';
     }
     if (std::fclose(input) != 0) {
         std::perror("input.txt");
@@ -191,7 +187,6 @@ int main() {
     std::printf("1 — массив символов\n2 — Cи-строка\n3 — строка в файле\n");
     std::printf("Выберите вариант (1–3): ");
 
-    // Читаем пункт меню целиком, чтобы остаток ввода не стал частью строки.
     const int choice = std::getchar();
     int ch = std::getchar();
     bool validChoice = choice >= '1' && choice <= '3';
