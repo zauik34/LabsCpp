@@ -60,3 +60,36 @@ g++ -std=c++17 -Wall -Wextra -Wpedantic main.cpp -o lab1
 Можно записать свою строку в `input.txt`. Файлы ищутся в **рабочей папке запуска программы**. Существующий `output.txt` перезаписывается. Для кириллицы использовать UTF-8 без BOM.
 
 В `.gitignore` исключены сборочные файлы и настройки IDE. Файлы примера `input.txt` / `output.txt` хранятся в репозитории.
+
+## Автоматические тесты
+
+`tests.cpp` — отдельная программа с тестами на Catch2 2.13.10. Тесты запускают собранную лабораторную и проверяют все три режима: результат преобразования, максимальную серию, пустые строки, кириллицу, табуляцию, границы 4095/4096/4097 байт, чтение и запись файлов, ошибки и неправильный выбор меню. Дополнительно 40 сгенерированных строк сравниваются с независимым эталоном на регулярных выражениях.
+
+Тесты используют временную папку и не меняют примеры `input.txt` / `output.txt` в репозитории. `main.cpp` и `tests.cpp` собираются в **разные исполняемые файлы**, поскольку у каждого есть собственный `main()`.
+
+Один раз скачать официальный заголовок Catch2 из корня репозитория (PowerShell):
+
+```powershell
+New-Item -ItemType Directory -Force .test-deps/catch2 | Out-Null
+Invoke-WebRequest https://raw.githubusercontent.com/catchorg/Catch2/v2.13.10/single_include/catch2/catch.hpp -OutFile .test-deps/catch2/catch.hpp
+```
+
+Затем в **x64 Native Tools Command Prompt for VS 2022**, находясь в папке репозитория:
+
+```bat
+cl /nologo /std:c++17 /W4 /EHsc /utf-8 main.cpp /Fe:lab1.exe
+cl /nologo /std:c++17 /W4 /EHsc /utf-8 /I .test-deps tests.cpp /Fe:tests.exe
+tests.exe
+```
+
+Для GCC / Clang в Linux или macOS:
+
+```sh
+mkdir -p .test-deps/catch2
+curl -fL https://raw.githubusercontent.com/catchorg/Catch2/v2.13.10/single_include/catch2/catch.hpp -o .test-deps/catch2/catch.hpp
+g++ -std=c++17 -Wall -Wextra -Wpedantic main.cpp -o lab1
+g++ -std=c++17 -Wall -Wextra -Wpedantic -I .test-deps tests.cpp -o tests
+./tests
+```
+
+Скачанная зависимость `.test-deps/` и исполняемые файлы исключены из Git. Для автозапуска в отдельном тестовом проекте Visual Studio можно указать `"$(TargetPath)"` в событии после сборки; рабочая папка запуска должна содержать `lab1.exe`.
