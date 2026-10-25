@@ -67,29 +67,22 @@ g++ -std=c++17 -Wall -Wextra -Wpedantic main.cpp -o lab1
 
 Служебные файлы тестов находятся в `build/test-data/`, которая исключена из Git. Примеры `input.txt` / `output.txt` в корне репозитория сохраняются. `main.cpp` и `tests.cpp` собираются в **разные исполняемые файлы**, поскольку у каждого есть собственный `main()`.
 
-Один раз скачать официальный заголовок Catch2 из корня репозитория (PowerShell):
+Catch2 уже включён в репозиторий: `catch2/catch.hpp`, лицензия — `catch2/LICENSE.txt`. Отдельно скачивать библиотеку или настраивать пути заголовков не требуется. При скачивании ZIP нужно распаковать всю папку проекта, сохранив папку `catch2` рядом с `tests.cpp`.
 
-```powershell
-New-Item -ItemType Directory -Force .test-deps/catch2 | Out-Null
-Invoke-WebRequest https://raw.githubusercontent.com/catchorg/Catch2/v2.13.10/single_include/catch2/catch.hpp -OutFile .test-deps/catch2/catch.hpp
-```
-
-Затем в **x64 Native Tools Command Prompt for VS 2022**, находясь в папке репозитория:
+В **x64 Native Tools Command Prompt for VS 2022**, находясь в папке репозитория:
 
 ```bat
 cl /nologo /std:c++17 /W4 /EHsc /utf-8 main.cpp /Fe:lab1.exe
-cl /nologo /std:c++17 /W4 /EHsc /utf-8 /I .test-deps tests.cpp /Fe:tests.exe
+cl /nologo /std:c++17 /W4 /EHsc /utf-8 tests.cpp /Fe:tests.exe
 tests.exe
 ```
 
 Для GCC / Clang в Linux или macOS:
 
 ```sh
-mkdir -p .test-deps/catch2
-curl -fL https://raw.githubusercontent.com/catchorg/Catch2/v2.13.10/single_include/catch2/catch.hpp -o .test-deps/catch2/catch.hpp
 g++ -std=c++17 -Wall -Wextra -Wpedantic main.cpp -o lab1
-g++ -std=c++17 -Wall -Wextra -Wpedantic -I .test-deps tests.cpp -o tests
+g++ -std=c++17 -Wall -Wextra -Wpedantic tests.cpp -o tests
 ./tests
 ```
 
-Скачанная зависимость `.test-deps/` и исполняемые файлы исключены из Git. Для автозапуска в отдельном тестовом проекте Visual Studio можно указать `"$(TargetPath)"` в событии после сборки; рабочая папка запуска должна содержать `lab1.exe`.
+Исполняемые файлы исключены из Git. Для автозапуска в отдельном тестовом проекте Visual Studio можно указать `"$(TargetPath)"` в событии после сборки; рабочая папка запуска должна содержать `lab1.exe`.
