@@ -1,5 +1,7 @@
 .vs/
-.vscode/
+.vscode/*
+!.vscode/tasks.json
+!.vscode/launch.json
 *.user
 *.suo
 

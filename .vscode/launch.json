@@ -1,0 +1,23 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Lab 1",
+            "type": "cppvsdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/lab1.exe",
+            "cwd": "${workspaceFolder}",
+            "preLaunchTask": "Build lab1",
+            "externalConsole": false
+        },
+        {
+            "name": "Tests",
+            "type": "cppvsdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/tests.exe",
+            "cwd": "${workspaceFolder}",
+            "preLaunchTask": "Build tests",
+            "externalConsole": false
+        }
+    ]
+}
