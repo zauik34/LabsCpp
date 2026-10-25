@@ -20,10 +20,12 @@ if errorlevel 1 exit /b 1
 :build
 pushd "%~dp0"
 if errorlevel 1 exit /b 1
-cl /nologo /std:c++17 /W4 /Zi /EHsc /utf-8 main.cpp /Fe:lab1.exe /Fd:lab1.pdb
+if not exist build mkdir build
+if errorlevel 1 goto failed
+cl /nologo /std:c++17 /W4 /Zi /EHsc /utf-8 main.cpp /Fe:lab1.exe /Fd:build\lab1-compiler.pdb /link /PDB:build\lab1-linker.pdb /INCREMENTAL:NO
 if errorlevel 1 goto failed
 if /I "%TARGET%"=="main" goto done
-cl /nologo /std:c++17 /W4 /Zi /EHsc /utf-8 tests.cpp /Fe:tests.exe /Fd:tests.pdb
+cl /nologo /std:c++17 /W4 /Zi /EHsc /utf-8 tests.cpp /Fe:tests.exe /Fd:build\tests-compiler.pdb /link /PDB:build\tests-linker.pdb /INCREMENTAL:NO
 if errorlevel 1 goto failed
 
 :done

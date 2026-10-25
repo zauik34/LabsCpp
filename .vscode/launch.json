@@ -8,7 +8,7 @@
             "program": "${workspaceFolder}/lab1.exe",
             "cwd": "${workspaceFolder}",
             "preLaunchTask": "Build lab1",
-            "externalConsole": false
+            "console": "integratedTerminal"
         },
         {
             "name": "Tests",
@@ -17,7 +17,7 @@
             "program": "${workspaceFolder}/tests.exe",
             "cwd": "${workspaceFolder}",
             "preLaunchTask": "Build tests",
-            "externalConsole": false
+            "console": "integratedTerminal"
         }
     ]
 }
