@@ -18,7 +18,3 @@ x86/
 *.idb
 *.pch
 *.out
-
-# Local input and generated result
-input.txt
-output.txt
