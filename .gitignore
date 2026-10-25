@@ -1,0 +1,24 @@
+# Visual Studio / VS Code
+.vs/
+.vscode/
+*.user
+*.suo
+
+# Build directories and compiler output
+build/
+Debug/
+Release/
+x64/
+x86/
+*.exe
+*.obj
+*.o
+*.pdb
+*.ilk
+*.idb
+*.pch
+*.out
+
+# Local input and generated result
+input.txt
+output.txt
