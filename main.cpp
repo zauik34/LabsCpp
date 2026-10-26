@@ -63,17 +63,22 @@ bool processArray() {
 }
 
 bool processCString() {
-    char text[MAX_LENGTH + 2];
-    std::printf("Введите строку (не более %d байт):\n", MAX_LENGTH);
+    char text[MAX_LENGTH + 1];
+    int length = 0;
+    bool tooLong = false;
 
-    if (std::fgets(text, sizeof(text), stdin) == nullptr) {
-        std::fprintf(stderr, "Ошибка: не удалось прочитать строку.\n");
-        return false;
+    std::printf("Введите строку (не более %d байт):\n", MAX_LENGTH);
+    int ch;
+    while ((ch = std::getchar()) != '\n' && ch != EOF) {
+        if (length < MAX_LENGTH) {
+            text[length++] = static_cast<char>(ch);
+        } else {
+            tooLong = true;
+        }
     }
 
-    const std::size_t length = std::strcspn(text, "\r\n");
-    if (length > MAX_LENGTH) {
-        std::fprintf(stderr, "Ошибка: строка слишком длинная.\n");
+    if (tooLong || std::ferror(stdin)) {
+        std::fprintf(stderr, "Ошибка: строка слишком длинная или не удалось прочитать ввод.\n");
         return false;
     }
     text[length] = '\0';
