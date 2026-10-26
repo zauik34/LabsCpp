@@ -8,7 +8,7 @@
 #include <string>
 
 std::string readFile(const char* path) {
-    std::ifstream file(path, std::ios::binary);
+    std::ifstream file(path);
     REQUIRE(file.is_open());
     return {std::istreambuf_iterator<char>(file), std::istreambuf_iterator<char>()};
 }
@@ -26,7 +26,11 @@ void checkString(int mode, const char* source, const char* expected, int maximum
         REQUIRE(input.is_open());
         input << mode << '\n';
         if (mode != 3) {
-            input << source << '\n';
+            input << source;
+            if (mode == 2) {
+                input << "\\0";
+            }
+            input << '\n';
         }
     }
 
@@ -58,4 +62,5 @@ TEST_CASE("Replace runs divisible by three and remove other spaces") {
         checkString(mode, "A   B    C", "A*BC", 4);
         checkString(mode, "   abc  ", "*abc", 3);
     }
+    checkString(2, "A   B\nC  D", "A*B\nCD", 3);
 }

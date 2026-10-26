@@ -63,22 +63,31 @@ bool processArray() {
 }
 
 bool processCString() {
-    char text[MAX_LENGTH + 1];
+    char text[MAX_LENGTH + 2];
     int length = 0;
-    bool tooLong = false;
+    bool terminated = false;
 
-    std::printf("Введите строку (не более %d байт):\n", MAX_LENGTH);
+    std::printf("Введите строку (не более %d байт). В конце введите \\0 и нажмите Enter:\n", MAX_LENGTH);
     int ch;
-    while ((ch = std::getchar()) != '\n' && ch != EOF) {
-        if (length < MAX_LENGTH) {
-            text[length++] = static_cast<char>(ch);
-        } else {
-            tooLong = true;
+    while ((ch = std::getchar()) != EOF) {
+        if (ch == '0' && length > 0 && text[length - 1] == '\\') {
+            --length;
+            terminated = true;
+            break;
         }
+        if (length >= MAX_LENGTH + 1) {
+            std::fprintf(stderr, "Ошибка: строка слишком длинная.\n");
+            return false;
+        }
+        text[length++] = static_cast<char>(ch);
     }
 
-    if (tooLong || std::ferror(stdin)) {
+    if (length > MAX_LENGTH || std::ferror(stdin)) {
         std::fprintf(stderr, "Ошибка: строка слишком длинная или не удалось прочитать ввод.\n");
+        return false;
+    }
+    if (!terminated) {
+        std::fprintf(stderr, "Ошибка: ввод должен завершаться последовательностью \\0.\n");
         return false;
     }
     text[length] = '\0';
